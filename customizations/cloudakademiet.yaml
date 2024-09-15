@@ -1,11 +1,6 @@
 $schema: "1.0"
 name: "devbox-customization"
 tasks:
-  - name: git-clone
-    description: Clone this repository into C:\Workshop
-    parameters:
-      repositoryUrl: https://github.com/sopra-steria-norge/WhoOwesWhat-Net48.git
-      directory: C:\Workshop
   - name: winget
     parameters:
       package: Microsoft.VisualStudio.2022.Community
