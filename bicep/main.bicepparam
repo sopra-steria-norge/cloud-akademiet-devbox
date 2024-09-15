@@ -1,7 +1,7 @@
 using './main.bicep'
 
 param baseName = 'cloudakademiet24'
-param location = 'swedencentral'
+param location = 'westeurope'
 param enableNetworking = false
 
 param devboxDefinitions = [
@@ -22,6 +22,6 @@ param devboxPools = [
   }
 ]
 
-param principalId = '73c21db6-81e9-4f00-a5f6-55dc2ec9ad69' // cloud-akademiet-all
+param principalId = '0c821cd4-4b24-4987-9bb9-420aaf747ec1' // cloud-akademiet-all
 param principalType = 'Group'
 

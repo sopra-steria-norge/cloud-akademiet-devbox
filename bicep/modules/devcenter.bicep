@@ -28,6 +28,9 @@ param devboxDefinitions devboxDefinitionType[] = []
 @description('List of devbox pools')
 param devboxPools devboxPoolType[] = []
 
+@description('The maximum number of dev boxes per user')
+param maxDevBoxesPerUser int = 2
+
 @allowed([
   'Group'
   'ServicePrincipal'
@@ -69,11 +72,34 @@ type devboxPoolType = {
   singleSignOn: 'Enabled' | 'Disabled'
 }
 
-
 // RESOURCES
 resource devcenter 'Microsoft.DevCenter/devcenters@2024-07-01-preview' = {
   name: devcenterName
   location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
+}
+
+module devcenterRoleAssignment 'roleAssignment.bicep' = {
+  scope: subscription()
+  name: '${deployment().name}-roleAssignment'
+  params: {
+    principalId: devcenter.identity.principalId
+  }
+}
+
+resource catalog 'Microsoft.DevCenter/devcenters/catalogs@2024-07-01-preview' = {
+  name: 'default'
+  parent: devcenter
+  properties: {
+    gitHub: {
+      uri: 'https://github.com/microsoft/devcenter-catalog.git'
+      branch: 'main'
+      path: 'Tasks'
+    }
+    syncType: 'Scheduled'
+  }
 }
 
 resource networkConnection 'Microsoft.DevCenter/networkConnections@2024-07-01-preview' = if(enableNetworking) {
@@ -118,12 +144,14 @@ resource project 'Microsoft.DevCenter/projects@2024-07-01-preview' = {
   location: location
   properties: {
     devCenterId: devcenter.id
+    maxDevBoxesPerUser: maxDevBoxesPerUser
   }
   resource pools 'pools' = [for pool in devboxPools: {
     name: pool.name
     location: location
     properties: {
       devBoxDefinitionName: pool.definition
+      displayName: pool.name
       networkConnectionName: enableNetworking ? networkConnection.name : 'managedNetwork'
       virtualNetworkType: enableNetworking ? 'Unmanaged' : 'Managed'
       devBoxDefinitionType: 'Reference'
@@ -138,10 +166,12 @@ resource project 'Microsoft.DevCenter/projects@2024-07-01-preview' = {
     }
   }]
   dependsOn: [
+    devcenterRoleAssignment
     devboxDefinitionsRes
   ]
 }
 
+// Role assignment for dev box users
 resource role 'Microsoft.Authorization/roleAssignments@2022-04-01' = if(!empty(principalId)) {
   name: guid(subscription().id, resourceGroup().id, principalId, roleDefinitionId)
   scope: project

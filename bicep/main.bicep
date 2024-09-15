@@ -57,6 +57,7 @@ resource rg 'Microsoft.Resources/resourceGroups@2024-03-01' = {
   location:  location
 }
 
+// Deploy virtual network if needed
 module vnet 'modules/vnet.bicep' = if(enableNetworking) {
   name: '${deployment().name}-vnet'
   scope: rg
@@ -69,6 +70,7 @@ module vnet 'modules/vnet.bicep' = if(enableNetworking) {
   }
 }
 
+// Deploy dev center, dev box definitions and dev box pools
 module devcenter 'modules/devcenter.bicep' = {
   name: '${deployment().name}-devcenter'
   scope: rg
