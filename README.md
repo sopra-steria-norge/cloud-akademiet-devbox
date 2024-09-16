@@ -42,8 +42,8 @@ Additional customizations are added to the Dev Box by applying the [customizatio
 3. Give the Dev Box a name, e.g. `devbox-<firstname>`
 4. Select **Apply customizations** and then press **Continue**
 5. Upload customization file
-    a. Download [this file](https://github.com/sopra-steria-norge/cloud-akademiet-devbox/blob/main/customizations/cloudakademiet.yaml) to a local yaml file on your computer
-    b. Select the file for upload and press **Validate**
+    1. Download [this file](https://github.com/sopra-steria-norge/cloud-akademiet-devbox/blob/main/customizations/cloudakademiet.yaml) to a local yaml file on your computer
+    2. Select the file for upload and press **Validate**
 6. Select **Create** to begin provisioning your Dev Box
 
 For additional guide, see [the official docs](https://learn.microsoft.com/en-us/azure/dev-box/quickstart-create-dev-box#create-a-dev-box).
