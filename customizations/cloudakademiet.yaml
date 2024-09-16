@@ -22,3 +22,4 @@ tasks:
     parameters:
       command: |
         winget install docker-desktop -y --no-progress
+        Restart-Computer
