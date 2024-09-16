@@ -7,7 +7,7 @@ param projectDisplayName = 'Cloud Akademiet 24 - Dev'
 
 param devboxDefinitions = [
   {
-    name: 'win11-ent-vs2022'
+    name: 'win11-ent-vs2022-pro'
     image: 'win11-ent-vs2022-pro'
     compute: '8c-32gb'
     storage: '256gb'
@@ -18,7 +18,7 @@ param devboxPools = [
   {
     name: 'cloudakademiet24-devbox-pool'
     administrator: 'Enabled'
-    definition: 'win11-ent-vs2022'
+    definition: 'win11-ent-vs2022-pro'
     singleSignOn: 'Enabled'
   }
 ]
