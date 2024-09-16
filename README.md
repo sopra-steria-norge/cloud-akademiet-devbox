@@ -18,7 +18,7 @@ This repository contains the necessary configuration to create [Microsoft Dev Bo
 3. Run the deployment with:
 
 ```powershell
-New-AzDeployment -Name "devbox-$(get-date -Format 'ddMMyy-HHmmss')" -Location 'swedencentral' -TemplateFile './bicep/main.bicep' -TemplateParameterFile './bicep/main.bicepparam'
+New-AzDeployment -Name "devbox-$(get-date -Format 'ddMMyy-HHmmss')" -Location 'westeurope' -TemplateFile './bicep/main.bicep' -TemplateParameterFile './bicep/main.bicepparam'
 ```
 
 ### About the Dev Box VMs
