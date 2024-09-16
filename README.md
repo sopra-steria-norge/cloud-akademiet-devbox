@@ -57,6 +57,8 @@ For additional guide, see [the official docs](https://learn.microsoft.com/en-us/
 
 For additional guide, see [the official docs](https://learn.microsoft.com/en-us/azure/dev-box/quickstart-create-dev-box#connect-to-a-dev-box)
 
+**Note**: After initial login you need to update WSL and install Docker Desktop. See [this script](./customizations/winget.ps1) for the commands to isntall these.
+
 ### Tips and tricks
 
 - **Restart machine**: In case of required restarts after installations or updates you can restart via Windows menu after connecting, wait a few minutes and then connect again.
