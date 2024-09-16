@@ -16,10 +16,9 @@ tasks:
   - name: powershell
     parameters:
       command: |
-        # Install WSL2 distros
-        wsl --install -d Ubuntu-24.04
-  - name: powershell
-    parameters:
-      command: |
-        winget install docker-desktop -y --no-progress
-        Restart-Computer
+        wsl --install --no-distribution
+#  - name: powershell
+#    parameters:
+#      command: |
+#        winget install docker-desktop -y --no-progress
+#        Restart-Computer
