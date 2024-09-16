@@ -13,7 +13,7 @@ param location string
 param resourceGroupName string = '${baseName}-rg'
 
 @description('The name of Dev Center')
-param devcenterName string = '${baseName}-${uniqueString(subscription().id, resourceGroupName)}-dc'
+param devcenterName string = '${baseName}-${take(uniqueString(subscription().id, resourceGroupName), 3)}-dc'
 
 @description('Flag to enable networking for the dev box')
 param enableNetworking bool = false
