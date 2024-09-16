@@ -14,10 +14,10 @@ tasks:
     parameters:
       package: Microsoft.SQLServer.2022.Express
       runAsUser: true
-  - name: powershell
-    parameters:
-      command: |
-        wsl --install --no-distribution
+#  - name: powershell
+#    parameters:
+#      command: |
+#        wsl --install --no-distribution
 #  - name: powershell
 #    parameters:
 #      command: |
