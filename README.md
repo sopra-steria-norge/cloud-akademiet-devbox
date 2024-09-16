@@ -41,12 +41,28 @@ Additional customizations are added to the Dev Box by applying the [customizatio
 2. Press **+ New** and select **New Dev Box**
 3. Give the Dev Box a name, e.g. `devbox-<firstname>`
 4. Select **Apply customizations** and then press **Continue**
-5. Upload customization file (TBD)
+5. Upload customization file
+    a. Download [this file](https://github.com/sopra-steria-norge/cloud-akademiet-devbox/blob/main/customizations/cloudakademiet.yaml) to a local yaml file on your computer
+    b. Select the file for upload and press **Validate**
 6. Select **Create** to begin provisioning your Dev Box
+
+For additional guide, see [the official docs](https://learn.microsoft.com/en-us/azure/dev-box/quickstart-create-dev-box#create-a-dev-box).
 
 ### Use your Dev Box
 
-TBD
+1. Sign into the Developer Portal: https://devportal.microsoft.com/
+2. Press **Open in RDP Client** on the Dev Box
+3. If you do not have the Remote Desktop App, press the link to download and install this app
+4. Press **Connect** to connect to your Dev Box
+
+For additional guide, see [the official docs](https://learn.microsoft.com/en-us/azure/dev-box/quickstart-create-dev-box#connect-to-a-dev-box)
+
+### Tips and tricks
+
+- **Restart machine**: In case of required restarts after installations or updates you can restart via Windows menu after connecting, wait a few minutes and then connect again.
+- **Install missing software**: Use `winget` to install software. See list of required packages in [this script](./customizations/winget.ps1). You can search all available software for Winget [here](https://winstall.app/).
+- **Hibernation**: The machine is set to hibernate after 60m of inactivity. This is to ensure cost efficiency and not to pay for the machine while it is not in use.
+- **Visual Studio versions**: The machine already have Visual Studio Enteprise 2022 installed. If you do not have an enterprise license and want to use the community version this will show as "Visual Studio 2022 (2)" in the applications overview.
 
 ## Contributing
 
