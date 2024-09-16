@@ -9,5 +9,5 @@ wsl --install --no-distribution
 # Restart computer after this step
 
 # Install Docker Desktop
-winget install docker-desktop -y --no-progress
+winget install --id=Docker.DockerDesktop -e
 # Restart computer again after this step
