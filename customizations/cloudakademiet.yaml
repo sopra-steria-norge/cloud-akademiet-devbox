@@ -14,12 +14,8 @@ tasks:
     parameters:
       package: Microsoft.SQLServer.2022.Express
       runAsUser: true
-#  - name: powershell
-#    parameters:
-#      command: |
-#        wsl --install --no-distribution
-#  - name: powershell
-#    parameters:
-#      command: |
-#        winget install docker-desktop -y --no-progress
-#        Restart-Computer
+  - name: powershell
+    parameters:
+      command: |
+        $shortcuts = Get-ChildItem -path "C:\ProgramData\Microsoft\Windows\Start Menu\Programs" -File -Recurse
+        $shortcuts | Where-Object { $_.Name -like "Visual Studio 2022*.lnk" } | Rename-Item -NewName { $_.Name -replace '\(2\)', '- Community' }
