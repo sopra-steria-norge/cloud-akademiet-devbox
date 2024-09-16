@@ -30,6 +30,9 @@ param networkConnectionName string = '${baseName}-con'
 @description('The name of Dev Center project')
 param projectName string = '${baseName}-dcprj'
 
+@description('The name of Dev Center project as it will be displayed in the UI')
+param projectDisplayName string = projectName
+
 @description('The name of the Virtual Network e.g. vnet-dcprj-devbox-test-eastus')
 param vnetName string = '${projectName}-${location}-vnet'
 
@@ -83,6 +86,7 @@ module devcenter 'modules/devcenter.bicep' = {
     subnetId: enableNetworking ? vnet.outputs.subnetId : ''
     networkConnectionName: networkConnectionName
     projectName: projectName
+    projectDisplayName: projectDisplayName
     networkingResourceGroupName: networkingResourceGroupName
     principalId: principalId
     principalType: principalType

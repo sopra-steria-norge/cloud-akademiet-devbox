@@ -7,6 +7,9 @@ param networkConnectionName string = ''
 @description('The name of Dev Center project e.g. dcprj-devbox-test')
 param projectName string
 
+@description('The name of Dev Center project as it will be displayed in the UI')
+param projectDisplayName string = projectName
+
 @description('The resource group name of Network Connection e.g. rg-devbox-test')
 param networkingResourceGroupName string = ''
 
@@ -144,6 +147,7 @@ resource project 'Microsoft.DevCenter/projects@2024-07-01-preview' = {
   location: location
   properties: {
     devCenterId: devcenter.id
+    displayName: projectDisplayName
     maxDevBoxesPerUser: maxDevBoxesPerUser
   }
   resource pools 'pools' = [for pool in devboxPools: {

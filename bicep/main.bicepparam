@@ -3,6 +3,7 @@ using './main.bicep'
 param baseName = 'cloudakademiet24'
 param location = 'westeurope'
 param enableNetworking = false
+param projectDisplayName = 'Cloud Akademiet 24'
 
 param devboxDefinitions = [
   {
