@@ -8,7 +8,7 @@ param projectDisplayName = 'Cloud Akademiet 24 - Dev'
 param devboxDefinitions = [
   {
     name: 'win11-ent-vs2022'
-    image: 'win11-ent-vs2022'
+    image: 'win11-ent-vs2022-pro'
     compute: '8c-32gb'
     storage: '256gb'
     hibernateSupport: true

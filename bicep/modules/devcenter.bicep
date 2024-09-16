@@ -48,7 +48,8 @@ var roleDefinitionId = '45d50f46-0b78-4001-a660-4198cbe8cd05'
 var image = {
   'win11-ent-base': 'microsoftwindowsdesktop_windows-ent-cpc_win11-21h2-ent-cpc-os'
   'win11-ent-m365': 'microsoftwindowsdesktop_windows-ent-cpc_win11-21h2-ent-cpc-m365'
-  'win11-ent-vs2022': 'microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2'
+  'win11-ent-vs2022-ent': 'microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2'
+  'win11-ent-vs2022-pro': 'microsoftvisualstudio_visualstudioplustools_vs-2022-pro-general-win11-m365-gen2'
 }
 
 var compute = {
@@ -61,7 +62,7 @@ var compute = {
 @export()
 type devboxDefinitionType = {
   name: string
-  image: 'win11-ent-base' | 'win11-ent-m365' | 'win11-ent-vs2022'
+  image: 'win11-ent-base' | 'win11-ent-m365' | 'win11-ent-vs2022-ent'  | 'win11-ent-vs2022-pro'
   compute: '8c-32gb' | '16c-64gb' | '32c-128gb'
   storage: '256gb' | '512gb' | '1024gb' | '2048gb'
   hibernateSupport: bool
