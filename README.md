@@ -64,7 +64,7 @@ For additional guide, see [the official docs](https://learn.microsoft.com/en-us/
 - **Restart machine**: In case of required restarts after installations or updates you can restart via Windows menu after connecting, wait a few minutes and then connect again.
 - **Install missing software**: Use `winget` to install software. See list of required packages in [this script](./customizations/winget.ps1). You can search all available software for Winget [here](https://winstall.app/).
 - **Hibernation**: The machine is set to hibernate after 60m of inactivity. This is to ensure cost efficiency and not to pay for the machine while it is not in use.
-- **Visual Studio versions**: The machine already have Visual Studio Enteprise 2022 installed. If you do not have an enterprise license and want to use the community version this will show as "Visual Studio 2022 (2)" in the applications overview.
+- **Visual Studio versions**: The machine already have Visual Studio Professional 2022 installed. If you do not have an license and want to use the community version this will show as "Visual Studio 2022 (2)" in the applications overview.
 
 ## Contributing
 
