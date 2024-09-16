@@ -9,10 +9,11 @@ tasks:
       package: Microsoft.SQLServerManagementStudio
   - name: winget
     parameters:
-      package: Microsoft.SQLServer.2022.Express
+      package: Microsoft.DotNet.Framework.DeveloperPack_4
   - name: winget
     parameters:
-      package: Microsoft.DotNet.Framework.DeveloperPack_4
+      package: Microsoft.SQLServer.2022.Express
+      runAsUser: true
   - name: powershell
     parameters:
       command: |
