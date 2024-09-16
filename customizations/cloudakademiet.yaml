@@ -13,11 +13,11 @@ tasks:
   - name: winget
     parameters:
       package: Microsoft.DotNet.Framework.DeveloperPack_4
-  - name: powershell
-    parameters:
-      command: |
-        # Install WSL2 distros
-        wsl --install -d Ubuntu-24.04;
+#  - name: powershell
+#    parameters:
+#      command: |
+#        # Install WSL2 distros
+#        wsl --install -d Ubuntu-24.04;
   - name: choco
     parameters:
       package: docker-desktop
