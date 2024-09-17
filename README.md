@@ -14,12 +14,14 @@ This repository contains the necessary configuration to create [Microsoft Dev Bo
 ### Deployment
 
 1. Configure parameters in [main.bicepparam](./bicep/main.bicepparam) and save the file
-2. Sign into the tenant by running `Connect-AzAccount -Tenant <tenant-id>` in PowerShell
+2. Sign into the tenant by running `Connect-AzAccount -Tenant <tenant-id>` in PowerShell and ensure you select the appropriate subscription for deployment.
 3. Run the deployment with:
 
 ```powershell
 New-AzDeployment -Name "devbox-$(get-date -Format 'ddMMyy-HHmmss')" -Location 'westeurope' -TemplateFile './bicep/main.bicep' -TemplateParameterFile './bicep/main.bicepparam'
 ```
+
+Note: You can optionally replace Azure PowerShell with Azure CLI to deploy using [`az login`](https://learn.microsoft.com/en-us/cli/azure/get-started-with-azure-cli?view=azure-cli-latest#sign-into-the-azure-cli) and [`az deployment sub create`](https://learn.microsoft.com/en-us/cli/azure/deployment/sub?view=azure-cli-latest#az-deployment-sub-create).
 
 ### About the Dev Box VMs
 
@@ -31,7 +33,7 @@ The Dev Box definitions are set up as specified in [main.bicepparam](./bicep/mai
 
 The VMs have by default [this list](https://github.com/Azure/dev-box-images?tab=readme-ov-file#preinstalled-software) of available software preinstalled.
 
-Additional customizations are added to the Dev Box by applying the [customization file](./customizations/cloudakademiet.yaml) upon provisioning.
+Additional customizations are added to the Dev Box by applying the [customization file](./customizations/cloudakademiet.yaml) upon provisioning. The only customizations currently available to these Dev Boxes are the ones defined in the [default catalog](https://github.com/microsoft/devcenter-catalog/tree/main/Tasks) which is synced to the Dev Center.
 
 ## End User Usage
 
@@ -57,11 +59,11 @@ For additional guide, see [the official docs](https://learn.microsoft.com/en-us/
 
 For additional guide, see [the official docs](https://learn.microsoft.com/en-us/azure/dev-box/quickstart-create-dev-box#connect-to-a-dev-box)
 
-**Note**: After initial login you need to update WSL and install Docker Desktop. See [this script](./customizations/winget.ps1) for the commands to isntall these.
+**Note**: After initial login you need to update WSL and install Docker Desktop. See [the REQUIRED steps in this script](./customizations/winget.ps1) for the commands needed.
 
 ### Tips and tricks
 
-- **Restart machine**: In case of required restarts after installations or updates you can restart via Windows menu after connecting, wait a few minutes and then connect again.
+- **Restart machine**: In case of required restarts after installations or updates you can restart via Windows menu after connecting, wait a few minutes and then connect again. You can also restart the machine via the Developer Portal.
 - **Install missing software**: Use `winget` to install software. See list of required packages in [this script](./customizations/winget.ps1). You can search all available software for Winget [here](https://winstall.app/).
 - **Hibernation**: The machine is set to hibernate after 60m of inactivity. This is to ensure cost efficiency and not to pay for the machine while it is not in use.
 - **Visual Studio versions**: The machine already have Visual Studio Professional 2022 installed. If you do not have an license and want to use the community version this will show as "Visual Studio 2022 - Community" in the applications overview.
