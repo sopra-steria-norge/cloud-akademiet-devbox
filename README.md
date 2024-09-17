@@ -10,6 +10,8 @@ This repository contains the necessary configuration to create [Microsoft Dev Bo
   - [Azure PowerShell module (minimum 12.3)](https://learn.microsoft.com/en-us/powershell/azure/install-azure-powershell)
 - [Bicep tools](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install)
 - Owner permissions on a subscription with the Microsoft.DevCenter provider registered
+    - [How to: Register Resource Provider Microsoft.DevCenter](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types#register-resource-provider)
+    - Note that the quota for DevBoxes General vCPUs in your region might need an increase if you are planning on deploying many. Follow [this guide](https://learn.microsoft.com/en-us/azure/quotas/quickstart-increase-quota-portal) to request a increase if needed.
 
 ### Deployment
 
