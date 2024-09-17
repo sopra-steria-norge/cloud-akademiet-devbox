@@ -2,7 +2,11 @@
 
 This repository contains the necessary configuration to create [Microsoft Dev Boxes](https://learn.microsoft.com/en-us/azure/dev-box/overview-what-is-microsoft-dev-box) to use as developer workstations for workshop participants in Cloud-akademiet.
 
+:point_right: If you are an end user jump directly down to [end user usage](#end-user-usage).
+
 ## Admin Usage
+
+This section is inteded for those who are deploying and managing Dev Center, Dev Box definitions and Dev Box pools.
 
 ## Prerequisities
 
@@ -39,6 +43,8 @@ The VMs have by default [this list](https://github.com/Azure/dev-box-images?tab=
 Additional customizations are added to the Dev Box by applying the [customization file](./customizations/cloudakademiet.yaml) upon provisioning. The only customizations currently available to these Dev Boxes are the ones defined in the [default catalog](https://github.com/microsoft/devcenter-catalog/tree/main/Tasks) which is synced to the Dev Center.
 
 ## End User Usage
+
+This section is inteded for those who are provided access to provision their own Dev Boxes for development.
 
 ### Create a new Dev Box
 
