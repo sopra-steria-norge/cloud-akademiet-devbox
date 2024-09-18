@@ -2,6 +2,7 @@ targetScope = 'subscription'
 
 import {devboxDefinitionType, devboxPoolType} from './modules/devcenter.bicep'
 
+// MARK: Params
 @maxLength(16)
 @description('The name to use as a base for other names')
 param baseName string
@@ -54,7 +55,7 @@ param principalId string = ''
 @description('The type of principal id: User, Group or ServicePrincipal')
 param principalType string = 'Group'
 
-// Resources
+// MARK: Resources
 resource rg 'Microsoft.Resources/resourceGroups@2024-03-01' = {
   name: resourceGroupName
   location:  location
@@ -93,6 +94,7 @@ module devcenter 'modules/devcenter.bicep' = {
   }
 }
 
+// MARK: Outputs 
 output devcenterName string = devcenter.outputs.devcenterName
 output projectName string = devcenter.outputs.projectName
 output networkConnectionName string = devcenter.outputs.networkConnectionName

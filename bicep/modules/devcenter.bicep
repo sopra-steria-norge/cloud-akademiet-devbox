@@ -1,3 +1,4 @@
+// MARK: Params
 @description('The name of Dev Center e.g. dc-devbox-test')
 param devcenterName string
 
@@ -41,7 +42,7 @@ param maxDevBoxesPerUser int = 2
 ])
 param principalType string = 'User'
 
-// VARIABLES
+// MARK: Variables
 // DevCenter Dev Box User role definition id
 var roleDefinitionId = '45d50f46-0b78-4001-a660-4198cbe8cd05'
 
@@ -58,7 +59,7 @@ var compute = {
   '32c-128gb': 'general_i_32c128gb1024ssd_v2'
 }
 
-// TYPES
+// MARK: Types
 @export()
 type devboxDefinitionType = {
   name: string
@@ -76,7 +77,7 @@ type devboxPoolType = {
   singleSignOn: 'Enabled' | 'Disabled'
 }
 
-// RESOURCES
+// MARK: Resources
 resource devcenter 'Microsoft.DevCenter/devcenters@2024-07-01-preview' = {
   name: devcenterName
   location: location
@@ -187,7 +188,7 @@ resource role 'Microsoft.Authorization/roleAssignments@2022-04-01' = if(!empty(p
   }
 }
 
-// OUTPUTS
+// MARK: Outputs
 output devcenterName string = devcenter.name
 
 output definitions array = [for (definition, i) in devboxDefinitions: {
