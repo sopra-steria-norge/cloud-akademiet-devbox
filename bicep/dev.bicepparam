@@ -23,6 +23,18 @@ param devboxPools = [
   }
 ]
 
-param principalId = '2d267877-042e-4d46-91cc-e45bcb2f1894' // myself (mats)
-param principalType = 'User'
+param devboxAdmins = [
+  {
+    principalId: '2d267877-042e-4d46-91cc-e45bcb2f1894'
+    principalType: 'User'
+    description: 'mats'
+  }
+]
 
+param devboxUsers = [
+  {
+    principalId: '2d267877-042e-4d46-91cc-e45bcb2f1894'
+    principalType: 'User'
+    description: 'mats'
+  }
+]

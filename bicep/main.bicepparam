@@ -23,6 +23,20 @@ param devboxPools = [
   }
 ]
 
-param principalId = '0c821cd4-4b24-4987-9bb9-420aaf747ec1' // cloud-akademiet-all
-param principalType = 'Group'
+param devboxAdmins = [
+  {
+   principalId: '7b48d9c1-9d69-4f6d-96f8-4e96c000445d'
+   principalType: 'Group'
+   description:  'cloud-akademiet-admins'
+  }
+]
+
+param devboxUsers = [
+  {
+    principalId:  '0c821cd4-4b24-4987-9bb9-420aaf747ec1'
+    principalType: 'Group'
+    description: 'cloud-akademiet-all'
+  }
+]
+
 

@@ -20,9 +20,6 @@ param enableNetworking bool = false
 @description('The resource id of Virtual network subnet')
 param subnetId string = ''
 
-@description('The user or group id that will be granted to Devcenter Dev Box User role')
-param principalId string
-
 @description('Primary location for all resources e.g. eastus')
 param location string = resourceGroup().location
 
@@ -32,19 +29,18 @@ param devboxDefinitions devboxDefinitionType[] = []
 @description('List of devbox pools')
 param devboxPools devboxPoolType[] = []
 
+@description('The users or groups that will be granted to Devcenter Project Admin role')
+param devboxAdmins array = []
+
+@description('The users or groups that will be granted to Devcenter Dev Box User role')
+param devboxUsers array = []
+
 @description('The maximum number of dev boxes per user')
 param maxDevBoxesPerUser int = 2
 
-@allowed([
-  'Group'
-  'ServicePrincipal'
-  'User'
-])
-param principalType string = 'User'
-
 // MARK: Variables
-// DevCenter Dev Box User role definition id
-var roleDefinitionId = '45d50f46-0b78-4001-a660-4198cbe8cd05'
+var devBoxUserRoleId = '45d50f46-0b78-4001-a660-4198cbe8cd05'
+var devCenterAdminRoleId = '331c37c6-af14-46d9-b9f4-e1909e1b95a0'
 
 var image = {
   'win11-ent-base': 'microsoftwindowsdesktop_windows-ent-cpc_win11-21h2-ent-cpc-os'
@@ -75,6 +71,13 @@ type devboxPoolType = {
   definition: string
   administrator: 'Enabled' | 'Disabled'
   singleSignOn: 'Enabled' | 'Disabled'
+}
+
+@export()
+type devboxRoleType = {
+  principalId: string
+  principalType:  'Group' | 'ServicePrincipal' | 'User'
+  description: string
 }
 
 // MARK: Resources
@@ -178,15 +181,26 @@ resource project 'Microsoft.DevCenter/projects@2024-07-01-preview' = {
 }
 
 // Role assignment for dev box users
-resource role 'Microsoft.Authorization/roleAssignments@2022-04-01' = if(!empty(principalId)) {
-  name: guid(subscription().id, resourceGroup().id, principalId, roleDefinitionId)
+resource devboxUsersRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for item in devboxUsers: {
+  name: guid(subscription().id, resourceGroup().id, item.principalId, devBoxUserRoleId)
   scope: project
   properties: {
-    principalId: principalId
-    principalType: principalType
-    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', roleDefinitionId)
+    principalId: item.principalId
+    principalType: item.principalType
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', devBoxUserRoleId)
   }
-}
+}]
+
+// Role assignment for dev box users
+resource devcenterAdminsRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for item in devboxAdmins: {
+  name: guid(subscription().id, resourceGroup().id, item.principalId, devCenterAdminRoleId)
+  scope: project
+  properties: {
+    principalId: item.principalId
+    principalType: item.principalType
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', devCenterAdminRoleId)
+  }
+}]
 
 // MARK: Outputs
 output devcenterName string = devcenter.name

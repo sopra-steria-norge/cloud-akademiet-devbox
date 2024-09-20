@@ -1,6 +1,6 @@
 targetScope = 'subscription'
 
-import {devboxDefinitionType, devboxPoolType} from './modules/devcenter.bicep'
+import {devboxDefinitionType, devboxPoolType, devboxRoleType} from './modules/devcenter.bicep'
 
 // MARK: Params
 @maxLength(16)
@@ -49,11 +49,11 @@ param subnetAddressPrefixes string = '10.4.0.0/24'
 @description('Name of the networking resource group')
 param networkingResourceGroupName string = '${resourceGroupName}-network'
 
-@description('The user or group id that will be granted to Devcenter Dev Box User role')
-param principalId string = ''
+@description('The users or groups that will be granted to Devcenter Project Admin role')
+param devboxAdmins devboxRoleType[] = []
 
-@description('The type of principal id: User, Group or ServicePrincipal')
-param principalType string = 'Group'
+@description('The users or groups that will be granted to Devcenter Dev Box User role')
+param devboxUsers devboxRoleType[] = []
 
 // MARK: Resources
 resource rg 'Microsoft.Resources/resourceGroups@2024-03-01' = {
@@ -89,8 +89,8 @@ module devcenter 'modules/devcenter.bicep' = {
     projectName: projectName
     projectDisplayName: projectDisplayName
     networkingResourceGroupName: networkingResourceGroupName
-    principalId: principalId
-    principalType: principalType
+    devboxUsers: devboxUsers
+    devboxAdmins: devboxAdmins
   }
 }
 
