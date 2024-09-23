@@ -10,6 +10,10 @@ on:
         default: false
         type: boolean
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   hibernate-all:
     runs-on: ubuntu-22.04
