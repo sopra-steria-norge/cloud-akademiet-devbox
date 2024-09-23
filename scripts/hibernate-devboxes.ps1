@@ -19,6 +19,6 @@ Write-Host "- Found $($devboxes.Count) devboxes in total"
 $runningDevboxes = $devboxes | Where-Object PowerState -ne "Hibernated"
 Write-Host "- Hibernating all running devboxes ($($runningDevboxes.Count)):"
 $devboxes | Where-Object PowerState -ne "Hibernated" | ForEach-Object -Parallel {
-  Write-Host "  - Hibernating [$($_.Name)]... with whatifpreference $using:WhatIfPreference"
-  #$null = Stop-AzDevCenterUserDevBox -Endpoint $using:project.DevCenterUri -ProjectName $using:project.Name -Name $_.Name -Hibernate
+  Write-Host "  - Hibernating [$($_.Name)]..."
+  $null = Stop-AzDevCenterUserDevBox -Endpoint $using:project.DevCenterUri -ProjectName $using:project.Name -UserId $_.User -Name $_.Name -Hibernate
 }

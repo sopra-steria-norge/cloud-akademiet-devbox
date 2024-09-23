@@ -1,7 +1,7 @@
 name: Devbox Hibernator 😴
 on:
   schedule:
-    - cron: '0 20 * * *'  # 20:00 UTC (22:00 CEST)
+    - cron: '0 22,20,12,8 * * *'  # UTC 08, 10, 20, 22 (CEST 10, 12, 22, 00)
   workflow_dispatch:
     inputs:
       whatif:
