@@ -1,0 +1,34 @@
+name: Devbox Hibernator 😴
+on:
+  schedule:
+    - cron: '0 20 * * *'  # 20:00 UTC (22:00 CEST)
+  workflow_dispatch:
+    inputs:
+      whatif:
+        description: 'Apply WhatIf to the hibernation script'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  hibernate-all:
+    runs-on: ubuntu-22.04
+    name: 'Hibernate all devboxes'
+    environment: Azure
+    env:
+      WHAT_IF: ${{ github.event.inputs.whatif || 'false' }}
+    steps:
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          auth-type: IDENTITY
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: true
+
+      - name: Run hibernation script
+        uses: azure/powershell@v2
+        with:
+          azPSVersion: "latest"
+          inlineScript: ./scripts/hibernate-devboxes.ps1 -WhatIf:$${{ env.WHAT_IF }}
