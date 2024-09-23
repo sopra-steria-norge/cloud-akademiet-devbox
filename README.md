@@ -42,6 +42,18 @@ The VMs have by default [this list](https://github.com/Azure/dev-box-images?tab=
 
 Additional customizations are added to the Dev Box by applying the [customization file](./customizations/cloudakademiet.yaml) upon provisioning. The only customizations currently available to these Dev Boxes are the ones defined in the [default catalog](https://github.com/microsoft/devcenter-catalog/tree/main/Tasks) which is synced to the Dev Center.
 
+### Pricing
+
+For the given size the [pricing per DevBox](https://azure.microsoft.com/en-us/pricing/details/dev-box/) is approximately:
+
+| SKU	| Max Monthly Price	| Hourly Compute	| Monthly Storage |
+|-----|-------------------|-----------------|-----------------|
+| 8 vCPU, 32 GB RAM, 256 GB Storage	| kr1,564.31 | kr16.87 |	kr215.07 |
+
+Note that *when a Dev Box's total cost (including its monthly storage and hourly compute) reaches the level of the max monthly price of that instance for that month, billing will automatically stop for that Dev Box instance.*
+
+As a cost-saving measurement a [forced hibernation is run on a schedule](./.github/workflows/devbox-hibernator.yml).
+
 ## End User Usage
 
 This section is inteded for those who are provided access to provision their own Dev Boxes for development.
