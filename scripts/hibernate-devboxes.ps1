@@ -16,7 +16,7 @@ $devboxes = Get-AzDevCenterUserDevBox -Endpoint $project.DevCenterUri
 Write-Host "- Found $($devboxes.Count) devboxes in total"
 
 # Hibernate all running devboxes
-$runningDevboxes = $devboxes | Where-Object { $_.PowerState -ne "Hibernated" }
+$runningDevboxes = $devboxes | Where-Object { $_.PowerState -ne "Hibernated" -and $_.ProvisioningState -eq "Succeeded" }
 if(!$runningDevboxes){
   Write-Host "- No running devboxes found. Exiting..."
   exit 0
