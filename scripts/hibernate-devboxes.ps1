@@ -17,7 +17,7 @@ Write-Host "- Found $($devboxes.Count) devboxes in total"
 
 # Hibernate all running devboxes
 $runningDevboxes = $devboxes | Where-Object { $_.PowerState -ne "Hibernated" }
-if(!$runningDevboxes)[
+if(!$runningDevboxes){
   Write-Host "- No running devboxes found. Exiting..."
   exit 0
 }
