@@ -24,6 +24,7 @@ if(!$runningDevboxes){
 
 Write-Host "- Hibernating all running devboxes ($($runningDevboxes.Count)):"
 $runningDevboxes | ForEach-Object -Parallel {
+  $WhatIfPreference = $using:WhatIfPreference
   Write-Host "  - Hibernating [$($_.Name)]..."
-  $null = Stop-AzDevCenterUserDevBox -Endpoint $using:project.DevCenterUri -ProjectName $using:project.Name -UserId $_.User -Name $_.Name -Hibernate
+  $null = Stop-AzDevCenterUserDevBox -Endpoint $using:project.DevCenterUri -ProjectName $using:project.Name -UserId $_.User -Name $_.Name -Hibernate -WhatIf:$WhatIfPreference
 }
