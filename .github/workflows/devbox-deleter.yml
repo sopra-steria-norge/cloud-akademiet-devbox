@@ -1,0 +1,38 @@
+name: Devbox Deleter 🧹
+on:
+  workflow_dispatch:
+    inputs:
+      whatif:
+        description: 'Apply WhatIf to the deletion script'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  delete-all:
+    runs-on: ubuntu-22.04
+    name: 'Delete all devboxes'
+    environment: Azure
+    env:
+      WHAT_IF: ${{ github.event.inputs.whatif || 'false' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.CLIENT_ID }}
+          tenant-id: ${{ secrets.TENANT_ID }}
+          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+          enable-AzPSSession: true
+
+      - name: Run deletion script
+        uses: azure/powershell@v2
+        with:
+          azPSVersion: "latest"
+          inlineScript: ./scripts/delete-devboxes.ps1 -WhatIf:$${{ env.WHAT_IF }}
