@@ -20,8 +20,8 @@ if (!$devboxes) {
   exit 0
 }
 
-Write-Host "- Deleting all running devboxes ($($devboxes.Count)):"
-$runningDevboxes | ForEach-Object -Parallel {
+Write-Host "- Deleting all devboxes ($($devboxes.Count)):"
+$devboxes | ForEach-Object -Parallel {
   $WhatIfPreference = $using:WhatIfPreference
   Write-Host "  - Deleting [$($_.Name)]..."
   $null = Remove-AzDevCenterUserDevBox -Endpoint $using:project.DevCenterUri -ProjectName $using:project.Name -UserId $_.User -Name $_.Name -WhatIf:$WhatIfPreference
