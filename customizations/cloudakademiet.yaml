@@ -16,5 +16,8 @@ tasks:
       package: Microsoft.DotNet.Framework.DeveloperPack_4
   - name: winget
     parameters:
+      package: SUSE.RancherDesktop
+  - name: winget
+    parameters:
       package: Microsoft.SQLServer.2022.Express
       runAsUser: true

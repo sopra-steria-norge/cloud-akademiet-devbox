@@ -80,8 +80,6 @@ For additional guide, see [the official docs](https://learn.microsoft.com/en-us/
 
 For additional guide, see [the official docs](https://learn.microsoft.com/en-us/azure/dev-box/quickstart-create-dev-box#connect-to-a-dev-box)
 
-**Note**: ~~After initial login you need to update WSL and install Docker Desktop. See [the REQUIRED steps in this script](./customizations/winget.ps1) for the commands needed.~~ **Update 20.09.2024:** Await installation of Docker, due to licensing. We are working on veryfing an alternative (likely Podman/Rancher).
-
 ### Tips and tricks
 
 - **Restart machine**: In case of required restarts after installations or updates you can restart via Windows menu after connecting, wait a few minutes and then connect again. You can also restart the machine via the Developer Portal.
