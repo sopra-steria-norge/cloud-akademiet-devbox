@@ -81,7 +81,7 @@ type devboxRoleType = {
 }
 
 // MARK: Resources
-resource devcenter 'Microsoft.DevCenter/devcenters@2024-07-01-preview' = {
+resource devcenter 'Microsoft.DevCenter/devcenters@2025-02-01' = {
   name: devcenterName
   location: location
   identity: {
@@ -97,7 +97,7 @@ module devcenterRoleAssignment 'roleAssignment.bicep' = {
   }
 }
 
-resource catalog 'Microsoft.DevCenter/devcenters/catalogs@2024-07-01-preview' = {
+resource catalog 'Microsoft.DevCenter/devcenters/catalogs@2025-02-01' = {
   name: 'default'
   parent: devcenter
   properties: {
@@ -110,7 +110,7 @@ resource catalog 'Microsoft.DevCenter/devcenters/catalogs@2024-07-01-preview' = 
   }
 }
 
-resource networkConnection 'Microsoft.DevCenter/networkConnections@2024-07-01-preview' = if(enableNetworking) {
+resource networkConnection 'Microsoft.DevCenter/networkConnections@2025-02-01' = if(enableNetworking) {
   name: networkConnectionName
   location: location
   properties: {
@@ -120,7 +120,7 @@ resource networkConnection 'Microsoft.DevCenter/networkConnections@2024-07-01-pr
   }
 }
 
-resource attachedNetworks 'Microsoft.DevCenter/devcenters/attachednetworks@2024-07-01-preview' = if(enableNetworking) {
+resource attachedNetworks 'Microsoft.DevCenter/devcenters/attachednetworks@2025-02-01' = if(enableNetworking) {
   parent: devcenter
   name: networkConnection.name
   properties: {
@@ -128,7 +128,7 @@ resource attachedNetworks 'Microsoft.DevCenter/devcenters/attachednetworks@2024-
   }
 }
 
-resource devboxDefinitionsRes 'Microsoft.DevCenter/devcenters/devboxdefinitions@2024-07-01-preview' = [for definition in devboxDefinitions: {
+resource devboxDefinitionsRes 'Microsoft.DevCenter/devcenters/devboxdefinitions@2025-02-01' = [for definition in devboxDefinitions: {
   parent: devcenter
   name: definition.name
   location: location
@@ -147,7 +147,7 @@ resource devboxDefinitionsRes 'Microsoft.DevCenter/devcenters/devboxdefinitions@
   ]
 }]
 
-resource project 'Microsoft.DevCenter/projects@2024-07-01-preview' = {
+resource project 'Microsoft.DevCenter/projects@2025-02-01' = {
   name: projectName
   location: location
   properties: {
@@ -168,6 +168,10 @@ resource project 'Microsoft.DevCenter/projects@2024-07-01-preview' = {
       licenseType: 'Windows_Client'
       localAdministrator: pool.administrator
       singleSignOnStatus: pool.singleSignOn
+      stopOnNoConnect: {
+        gracePeriodMinutes: 60
+        status: 'Enabled'
+      }
       stopOnDisconnect: {
         gracePeriodMinutes: 60
         status: 'Enabled'
