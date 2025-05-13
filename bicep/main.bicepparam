@@ -1,9 +1,9 @@
 using './main.bicep'
 
-param baseName = 'cloudakademiet24'
+param baseName = 'cloudakademiet'
 param location = 'westeurope'
 param enableNetworking = false
-param projectDisplayName = 'Cloud Akademiet 24'
+param projectDisplayName = 'Cloud Akademiet'
 
 param devboxDefinitions = [
   {
@@ -16,7 +16,7 @@ param devboxDefinitions = [
 ]
 param devboxPools = [
   {
-    name: 'cloudakademiet24-devbox-pool'
+    name: 'cloudakademiet-devbox-pool'
     administrator: 'Enabled'
     definition: 'win11-ent-vs2022-pro'
     singleSignOn: 'Enabled'

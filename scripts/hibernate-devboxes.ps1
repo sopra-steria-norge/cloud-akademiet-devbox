@@ -2,7 +2,7 @@
 param (
   [Parameter()]
   [string]
-  $ResourceGroupName = "cloudakademiet24-rg"
+  $ResourceGroupName = "cloudakademiet-rg"
 )
 
 $ErrorActionPreference = "Stop"
