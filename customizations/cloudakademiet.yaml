@@ -17,7 +17,7 @@ tasks:
   - name: winget
     parameters:
       package: SUSE.RancherDesktop
+userTasks:
   - name: winget
     parameters:
       package: Microsoft.SQLServer.2022.Express
-      runAsUser: true
