@@ -49,9 +49,6 @@ param vnetAddressPrefixes string = '10.4.0.0/16'
 @description('The subnet address prefixes of Dev Box e.g. 10.4.0.0/24')
 param subnetAddressPrefixes string = '10.4.0.0/24'
 
-@description('Name of the networking resource group')
-param networkingResourceGroupName string = '${resourceGroupName}-network'
-
 @description('The users or groups that will be granted to Devcenter Project Admin role')
 param devboxAdmins devboxRoleType[] = []
 
@@ -96,7 +93,7 @@ module devcenter 'modules/devcenter.bicep' = {
     networkConnectionName: networkConnectionName
     projectName: projectName
     projectDisplayName: projectDisplayName
-    networkingResourceGroupName: networkingResourceGroupName
+    networkingResourceGroupName: rg.name
     devboxUsers: devboxUsers
     devboxAdmins: devboxAdmins
   }
