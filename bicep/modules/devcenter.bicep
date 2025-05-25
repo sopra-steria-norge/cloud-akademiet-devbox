@@ -35,6 +35,9 @@ param devboxAdmins array = []
 @description('The users or groups that will be granted to Devcenter Dev Box User role')
 param devboxUsers array = []
 
+@description('The custom catalogs to be used in Dev Center')
+param customCatalogs customCatalogType[] = []
+
 @description('The maximum number of dev boxes per user')
 param maxDevBoxesPerUser int = 2
 
@@ -80,12 +83,26 @@ type devboxRoleType = {
   description: string
 }
 
+@export()
+type customCatalogType = {
+  name: string
+  uri: string
+  branch: string
+  path: string
+  syncType: 'Manual' | 'Scheduled'
+}
+
 // MARK: Resources
 resource devcenter 'Microsoft.DevCenter/devcenters@2025-02-01' = {
   name: devcenterName
   location: location
   identity: {
     type: 'SystemAssigned'
+  }
+  properties: {
+    projectCatalogSettings: {
+      catalogItemSyncEnableStatus: 'Enabled'
+    }
   }
 }
 
@@ -97,7 +114,7 @@ module devcenterRoleAssignment 'roleAssignment.bicep' = {
   }
 }
 
-resource catalog 'Microsoft.DevCenter/devcenters/catalogs@2025-02-01' = {
+resource defaultCatalog 'Microsoft.DevCenter/devcenters/catalogs@2025-02-01' = {
   name: 'default'
   parent: devcenter
   properties: {
@@ -109,6 +126,19 @@ resource catalog 'Microsoft.DevCenter/devcenters/catalogs@2025-02-01' = {
     syncType: 'Scheduled'
   }
 }
+
+resource customCatalog 'Microsoft.DevCenter/devcenters/catalogs@2025-02-01' = [for catalog in customCatalogs: {
+  name: catalog.name
+  parent: devcenter
+  properties: {
+    gitHub: {
+      uri: catalog.uri
+      branch: catalog.branch
+      path: catalog.path
+    }
+    syncType: catalog.syncType
+  }
+}]
 
 resource networkConnection 'Microsoft.DevCenter/networkConnections@2025-02-01' = if(enableNetworking) {
   name: networkConnectionName
