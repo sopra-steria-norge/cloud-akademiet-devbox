@@ -1,5 +1,6 @@
 $schema: "1.0"
-name: "devbox-customization"
+name: "devbox-sopra-customization"
+image: ~Gallery~Default~microsoftvisualstudio_visualstudioplustools_vs-2022-pro-general-win11-m365-gen2
 tasks:
   - name: winget
     parameters:
