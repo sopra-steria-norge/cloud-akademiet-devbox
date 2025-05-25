@@ -104,8 +104,8 @@ You will for a later part of the workshop need to install [Rancher Desktop](http
 ### Tips and tricks
 
 - **Restart machine**: In case of required restarts after installations or updates you can restart via Windows menu after connecting, wait a few minutes and then connect again. You can also restart the machine via the Developer Portal.
-- **Install missing software**: Use `winget` to install software. See list of required packages in [this script](./scripts/winget.ps1). You can search all available software for Winget [here](https://winstall.app/).
-- **Update software**: Use `winget upgrade` to upgrade Software. Some examples are listed [here](./scripts/winget.ps1). You can also run Windows Update in settings to trigger system updates.
+- **Install missing software**: Use `winget` to install software. See list of required packages in [this script](./scripts/winget.ps1) that should already be installed during provisioning. You can search all available software for Winget [here](https://winstall.app/).
+- **Update software**: Use `winget upgrade` to upgrade Software. You can also run Windows Update in settings to trigger system updates.
 - **Hibernation**: The machine is set to hibernate after 60m of inactivity. This is to ensure cost efficiency and not to pay for the machine while it is not in use.
 - **Visual Studio versions**: The machine already have Visual Studio Professional 2022 installed. If you do not have an license and want to use the community version this will show as "Visual Studio 2022 - Community" in the applications overview.
 
