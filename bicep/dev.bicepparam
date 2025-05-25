@@ -14,7 +14,7 @@ param devboxDefinitions = [
     hibernateSupport: true
   }
 ]
-param devboxPools = [
+param devboxStandardPools = [
   {
     name: 'cloudakademiet-devbox-pool'
     administrator: 'Enabled'

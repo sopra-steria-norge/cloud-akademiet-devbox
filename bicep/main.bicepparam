@@ -14,12 +14,31 @@ param devboxDefinitions = [
     hibernateSupport: true
   }
 ]
-param devboxPools = [
+param devboxStandardPools = [
   {
-    name: 'cloudakademiet-devbox-pool'
+    name: 'cloudakademiet-devbox-std-pool'
     administrator: 'Enabled'
     definition: 'win11-ent-vs2022-pro'
     singleSignOn: 'Enabled'
+  }
+]
+
+param devboxCustomPools = [
+  {
+    name: 'cloudakademiet-devbox-custom-pool'
+    administrator: 'Enabled'
+    definition: 'devbox-sopra-customization'
+    singleSignOn: 'Enabled'
+  }
+]
+
+param customCatalogs = [
+  {
+    name: 'cloud-akademiet-devbox'
+    branch: 'main'
+    path: 'imagedefinition'
+    uri: 'https://github.com/sopra-steria-norge/cloud-akademiet-devbox.git'
+    syncType: 'Scheduled'
   }
 ]
 

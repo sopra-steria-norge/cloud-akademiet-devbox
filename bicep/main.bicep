@@ -1,6 +1,6 @@
 targetScope = 'subscription'
 
-import {devboxDefinitionType, devboxPoolType, devboxRoleType} from './modules/devcenter.bicep'
+import {devboxDefinitionType, devboxPoolType, devboxRoleType, customCatalogType} from './modules/devcenter.bicep'
 
 // MARK: Params
 @maxLength(16)
@@ -22,8 +22,11 @@ param enableNetworking bool = false
 @description('List of devbox definitions')
 param devboxDefinitions devboxDefinitionType[] = []
 
-@description('List of devbox pools')
-param devboxPools devboxPoolType[] = []
+@description('List of devbox standard pools without customizations')
+param devboxStandardPools devboxPoolType[] = []
+
+@description('List of devbox custom pools')
+param devboxCustomPools devboxPoolType[] = []
 
 @description('The name of Network Connection')
 param networkConnectionName string = '${baseName}-con'
@@ -55,6 +58,9 @@ param devboxAdmins devboxRoleType[] = []
 @description('The users or groups that will be granted to Devcenter Dev Box User role')
 param devboxUsers devboxRoleType[] = []
 
+@description('The custom catalogs to be used in Dev Center')
+param customCatalogs customCatalogType[] = []
+
 // MARK: Resources
 resource rg 'Microsoft.Resources/resourceGroups@2024-03-01' = {
   name: resourceGroupName
@@ -83,7 +89,9 @@ module devcenter 'modules/devcenter.bicep' = {
     devcenterName: devcenterName
     enableNetworking: enableNetworking
     devboxDefinitions: devboxDefinitions
-    devboxPools: devboxPools
+    devboxPools: devboxStandardPools
+    customCatalogs: customCatalogs
+    devboxCustomPools: devboxCustomPools
     subnetId: enableNetworking ? vnet.outputs.subnetId : ''
     networkConnectionName: networkConnectionName
     projectName: projectName

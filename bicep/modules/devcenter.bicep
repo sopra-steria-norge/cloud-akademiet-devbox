@@ -29,6 +29,9 @@ param devboxDefinitions devboxDefinitionType[] = []
 @description('List of devbox pools')
 param devboxPools devboxPoolType[] = []
 
+@description('List of devbox custom pools')
+param devboxCustomPools devboxPoolType[] = []
+
 @description('The users or groups that will be granted to Devcenter Project Admin role')
 param devboxAdmins array = []
 
@@ -100,6 +103,9 @@ resource devcenter 'Microsoft.DevCenter/devcenters@2025-02-01' = {
     type: 'SystemAssigned'
   }
   properties: {
+    networkSettings: {
+      microsoftHostedNetworkEnableStatus: 'Enabled'
+    }
     projectCatalogSettings: {
       catalogItemSyncEnableStatus: 'Enabled'
     }
@@ -126,19 +132,6 @@ resource defaultCatalog 'Microsoft.DevCenter/devcenters/catalogs@2025-02-01' = {
     syncType: 'Scheduled'
   }
 }
-
-resource customCatalog 'Microsoft.DevCenter/devcenters/catalogs@2025-02-01' = [for catalog in customCatalogs: {
-  name: catalog.name
-  parent: devcenter
-  properties: {
-    gitHub: {
-      uri: catalog.uri
-      branch: catalog.branch
-      path: catalog.path
-    }
-    syncType: catalog.syncType
-  }
-}]
 
 resource networkConnection 'Microsoft.DevCenter/networkConnections@2025-02-01' = if(enableNetworking) {
   name: networkConnectionName
@@ -184,16 +177,38 @@ resource project 'Microsoft.DevCenter/projects@2025-02-01' = {
     devCenterId: devcenter.id
     displayName: projectDisplayName
     maxDevBoxesPerUser: maxDevBoxesPerUser
+    catalogSettings: {
+      catalogItemSyncTypes: [
+        'EnvironmentDefinition'
+        'ImageDefinition'
+      ]
+    }
   }
-  resource pools 'pools' = [for pool in devboxPools: {
+}
+
+resource customCatalog 'Microsoft.DevCenter/projects/catalogs@2025-02-01' = [for catalog in customCatalogs: {
+  name: catalog.name
+  parent: project 
+  properties: {
+    gitHub: {
+      uri: catalog.uri
+      branch: catalog.branch
+      path: catalog.path
+    }
+    syncType: catalog.syncType
+  }
+}]
+
+resource pools 'Microsoft.DevCenter/projects/pools@2025-02-01' = [for pool in devboxPools: {
     name: pool.name
+    parent: project
     location: location
     properties: {
       devBoxDefinitionName: pool.definition
+      devBoxDefinitionType: 'Reference'
       displayName: pool.name
       networkConnectionName: enableNetworking ? networkConnection.name : 'managedNetwork'
       virtualNetworkType: enableNetworking ? 'Unmanaged' : 'Managed'
-      devBoxDefinitionType: 'Reference'
       managedVirtualNetworkRegions: enableNetworking ? [] : [location]
       licenseType: 'Windows_Client'
       localAdministrator: pool.administrator
@@ -207,12 +222,44 @@ resource project 'Microsoft.DevCenter/projects@2025-02-01' = {
         status: 'Enabled'
       }
     }
-  }]
   dependsOn: [
-    devcenterRoleAssignment
     devboxDefinitionsRes
   ]
-}
+}]
+
+resource customPools 'Microsoft.DevCenter/projects/pools@2025-02-01' = [for pool in devboxCustomPools: {
+    name: pool.name
+    parent: project
+    location: location
+    properties: {
+      devBoxDefinition: {
+        #disable-next-line BCP036
+        imageReference: '${devcenter.id}/images/~Catalog~cloud-akademiet-devbox~devbox-sopra-customization' // TODO parametrize this
+        sku: {
+          name: 'general_i_8c32gb256ssd_v2' // 8CPU, 32GB RAM, 256GB SSD
+        }
+      }
+      devBoxDefinitionType: 'Value'
+      displayName: pool.name
+      networkConnectionName: enableNetworking ? networkConnection.name : 'managedNetwork'
+      virtualNetworkType: enableNetworking ? 'Unmanaged' : 'Managed'
+      managedVirtualNetworkRegions: enableNetworking ? [] : [location]
+      licenseType: 'Windows_Client'
+      localAdministrator: pool.administrator
+      singleSignOnStatus: pool.singleSignOn
+      stopOnNoConnect: {
+        gracePeriodMinutes: 60
+        status: 'Enabled'
+      }
+      stopOnDisconnect: {
+        gracePeriodMinutes: 60
+        status: 'Enabled'
+      }
+    }
+  dependsOn: [
+    devboxDefinitionsRes
+  ]
+}]
 
 // Role assignment for dev box users
 resource devboxUsersRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for item in devboxUsers: {
@@ -248,5 +295,9 @@ output networkConnectionName string = enableNetworking ? networkConnection.name 
 output projectName string = project.name
 
 output poolNames array = [for (pool, i) in devboxPools: {
-  name: project::pools[i].name
+  name: pools[i].name
+}]
+
+output customPoolNames array = [for (pool, i) in devboxCustomPools: {
+  name: pools[i].name
 }]
