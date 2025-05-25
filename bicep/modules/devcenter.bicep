@@ -258,6 +258,7 @@ resource customPools 'Microsoft.DevCenter/projects/pools@2025-02-01' = [for pool
     }
   dependsOn: [
     devboxDefinitionsRes
+    customCatalog
   ]
 }]
 
