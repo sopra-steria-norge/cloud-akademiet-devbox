@@ -1,7 +1,7 @@
 using './main.bicep'
 
 param baseName = 'cloudakademiet'
-param location = 'westeurope'
+param location = 'northeurope'
 param enableNetworking = false
 param projectDisplayName = 'Cloud Akademiet'
 
