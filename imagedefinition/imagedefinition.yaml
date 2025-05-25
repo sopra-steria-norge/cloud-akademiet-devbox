@@ -15,9 +15,6 @@ tasks:
   - name: winget
     parameters:
       package: Microsoft.DotNet.Framework.DeveloperPack_4
-  - name: winget
-    parameters:
-      package: SUSE.RancherDesktop
 userTasks:
   - name: winget
     parameters:
