@@ -105,3 +105,4 @@ output projectName string = devcenter.outputs.projectName
 output networkConnectionName string = devcenter.outputs.networkConnectionName
 output definitions array = devcenter.outputs.definitions
 output pools array = devcenter.outputs.poolNames
+output customPools array = devcenter.outputs.customPoolNames
