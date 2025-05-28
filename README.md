@@ -96,10 +96,35 @@ You can disregard any Sopra Steria-branded software pop-ups (not needed for this
 
 You will for a later part of the workshop need to install [Rancher Desktop](https://rancherdesktop.io). To do this:
 
-1. Open a terminal
-2. Run `winget install SUSE.RancherDesktop`
-3. Open 'Rancher Desktop' (you don't need to enable Kubernetes) and ensure it runs
-4. Open a terminal and run `docker run hello-world`
+1. Open the Terminal application
+2. Run `winget install SUSE.RancherDesktop` and select 'Y' to accept the installation
+3. Accept the administrator prompt to continue the install (there might be two prompts here!)
+5. Restart the Dev Box and reconnect after a couple of minutes
+4. Open 'Rancher Desktop' (you don't need to enable Kubernetes) and ensure it runs
+6. Open the Terminal application and run `docker run hello-world`. It should show the following content:
+
+```
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+```
 
 ### Tips and tricks
 
