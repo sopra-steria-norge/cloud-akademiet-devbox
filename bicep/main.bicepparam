@@ -6,21 +6,23 @@ param enableNetworking = false
 param projectDisplayName = 'Cloud Akademiet'
 
 param devboxDefinitions = [
-  {
-    name: 'win11-ent-vs2022-pro'
-    image: 'win11-ent-vs2022-pro'
-    compute: '8c-32gb'
-    storage: '256gb'
-    hibernateSupport: true
-  }
+  // replaced with custom pool for now
+  //{
+  //  name: 'win11-ent-vs2022-pro'
+  //  image: 'win11-ent-vs2022-pro'
+  //  compute: '8c-32gb'
+  //  storage: '256gb'
+  //  hibernateSupport: true
+  //}
 ]
 param devboxStandardPools = [
-  {
-    name: 'cloudakademiet-devbox-std-pool'
-    administrator: 'Enabled'
-    definition: 'win11-ent-vs2022-pro'
-    singleSignOn: 'Enabled'
-  }
+  // replaced with custom pool for now
+  //{
+  //  name: 'cloudakademiet-devbox-std-pool'
+  //  administrator: 'Enabled'
+  //  definition: 'win11-ent-vs2022-pro'
+  //  singleSignOn: 'Enabled'
+  //}
 ]
 
 param devboxCustomPools = [
@@ -29,6 +31,8 @@ param devboxCustomPools = [
     administrator: 'Enabled'
     definition: 'devbox-sopra-customization'
     singleSignOn: 'Enabled'
+    catalogName: 'cloud-akademiet-devbox'
+    computeSize: '8c-32gb'
   }
 ]
 

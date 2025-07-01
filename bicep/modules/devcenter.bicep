@@ -45,8 +45,8 @@ param customCatalogs customCatalogType[] = []
 param maxDevBoxesPerUser int = 2
 
 // MARK: Variables
-var devBoxUserRoleId = '45d50f46-0b78-4001-a660-4198cbe8cd05'
-var devCenterAdminRoleId = '331c37c6-af14-46d9-b9f4-e1909e1b95a0'
+var devBoxUserRoleId = '45d50f46-0b78-4001-a660-4198cbe8cd05' // DevCenter Dev Box User
+var devCenterAdminRoleId = '331c37c6-af14-46d9-b9f4-e1909e1b95a0' // DevCenter Project Admin
 
 var image = {
   'win11-ent-base': 'microsoftwindowsdesktop_windows-ent-cpc_win11-21h2-ent-cpc-os'
@@ -65,7 +65,7 @@ var compute = {
 @export()
 type devboxDefinitionType = {
   name: string
-  image: 'win11-ent-base' | 'win11-ent-m365' | 'win11-ent-vs2022-ent'  | 'win11-ent-vs2022-pro'
+  image: 'win11-ent-base' | 'win11-ent-m365' | 'win11-ent-vs2022-ent' | 'win11-ent-vs2022-pro'
   compute: '8c-32gb' | '16c-64gb' | '32c-128gb'
   storage: '256gb' | '512gb' | '1024gb' | '2048gb'
   hibernateSupport: bool
@@ -77,12 +77,15 @@ type devboxPoolType = {
   definition: string
   administrator: 'Enabled' | 'Disabled'
   singleSignOn: 'Enabled' | 'Disabled'
+  // only used for custom pools
+  catalogName: string?
+  computeSize: '8c-32gb' | '16c-64gb' | '32c-128gb'?
 }
 
 @export()
 type devboxRoleType = {
   principalId: string
-  principalType:  'Group' | 'ServicePrincipal' | 'User'
+  principalType: 'Group' | 'ServicePrincipal' | 'User'
   description: string
 }
 
@@ -112,6 +115,7 @@ resource devcenter 'Microsoft.DevCenter/devcenters@2025-02-01' = {
   }
 }
 
+// Role assignment for Dev Center identity to be able to create resources
 module devcenterRoleAssignment 'roleAssignment.bicep' = {
   scope: subscription()
   name: '${deployment().name}-roleAssignment'
@@ -133,7 +137,7 @@ resource defaultCatalog 'Microsoft.DevCenter/devcenters/catalogs@2025-02-01' = {
   }
 }
 
-resource networkConnection 'Microsoft.DevCenter/networkConnections@2025-02-01' = if(enableNetworking) {
+resource networkConnection 'Microsoft.DevCenter/networkConnections@2025-02-01' = if (enableNetworking) {
   name: networkConnectionName
   location: location
   properties: {
@@ -143,7 +147,7 @@ resource networkConnection 'Microsoft.DevCenter/networkConnections@2025-02-01' =
   }
 }
 
-resource attachedNetworks 'Microsoft.DevCenter/devcenters/attachednetworks@2025-02-01' = if(enableNetworking) {
+resource attachedNetworks 'Microsoft.DevCenter/devcenters/attachednetworks@2025-02-01' = if (enableNetworking) {
   parent: devcenter
   name: networkConnection.name
   properties: {
@@ -151,24 +155,26 @@ resource attachedNetworks 'Microsoft.DevCenter/devcenters/attachednetworks@2025-
   }
 }
 
-resource devboxDefinitionsRes 'Microsoft.DevCenter/devcenters/devboxdefinitions@2025-02-01' = [for definition in devboxDefinitions: {
-  parent: devcenter
-  name: definition.name
-  location: location
-  properties: {
-    hibernateSupport: 'Enabled'
-    imageReference: {
-      id: '${devcenter.id}/galleries/default/images/${image[definition.image]}'
+resource devboxDefinitionsRes 'Microsoft.DevCenter/devcenters/devboxdefinitions@2025-02-01' = [
+  for definition in devboxDefinitions: {
+    parent: devcenter
+    name: definition.name
+    location: location
+    properties: {
+      hibernateSupport: 'Enabled'
+      imageReference: {
+        id: '${devcenter.id}/galleries/default/images/${image[definition.image]}'
+      }
+      sku: {
+        name: compute[definition.compute]
+      }
+      osStorageType: 'ssd_${definition.storage}'
     }
-    sku: {
-      name: compute[definition.compute]
-    }
-    osStorageType: 'ssd_${definition.storage}'
+    dependsOn: [
+      attachedNetworks
+    ]
   }
-  dependsOn: [
-    attachedNetworks
-  ]
-}]
+]
 
 resource project 'Microsoft.DevCenter/projects@2025-02-01' = {
   name: projectName
@@ -179,27 +185,30 @@ resource project 'Microsoft.DevCenter/projects@2025-02-01' = {
     maxDevBoxesPerUser: maxDevBoxesPerUser
     catalogSettings: {
       catalogItemSyncTypes: [
-        'EnvironmentDefinition'
         'ImageDefinition'
       ]
     }
   }
 }
 
-resource customCatalog 'Microsoft.DevCenter/projects/catalogs@2025-02-01' = [for catalog in customCatalogs: {
-  name: catalog.name
-  parent: project 
-  properties: {
-    gitHub: {
-      uri: catalog.uri
-      branch: catalog.branch
-      path: catalog.path
+// Custom catalogs
+resource customCatalog 'Microsoft.DevCenter/projects/catalogs@2025-02-01' = [
+  for catalog in customCatalogs: {
+    name: catalog.name
+    parent: project
+    properties: {
+      gitHub: {
+        uri: catalog.uri
+        path: catalog.path
+      }
+      syncType: catalog.syncType
     }
-    syncType: catalog.syncType
   }
-}]
+]
 
-resource pools 'Microsoft.DevCenter/projects/pools@2025-02-01' = [for pool in devboxPools: {
+// Standard pools
+resource standardPools 'Microsoft.DevCenter/projects/pools@2025-02-01' = [
+  for pool in devboxPools: {
     name: pool.name
     parent: project
     location: location
@@ -222,21 +231,27 @@ resource pools 'Microsoft.DevCenter/projects/pools@2025-02-01' = [for pool in de
         status: 'Enabled'
       }
     }
-  dependsOn: [
-    devboxDefinitionsRes
-  ]
-}]
+    dependsOn: [
+      devboxDefinitionsRes
+    ]
+  }
+]
 
-resource customPools 'Microsoft.DevCenter/projects/pools@2025-02-01' = [for pool in devboxCustomPools: {
+// Custom pools
+resource customPools 'Microsoft.DevCenter/projects/pools@2025-02-01' = [
+  for pool in devboxCustomPools: {
     name: pool.name
     parent: project
     location: location
     properties: {
+      devBoxDefinitionName: '~Catalog~${pool.?catalogName}~${pool.?definition}'
       devBoxDefinition: {
-        #disable-next-line BCP036
-        imageReference: '${devcenter.id}/images/~Catalog~cloud-akademiet-devbox~devbox-sopra-customization' // TODO parametrize this
+        imageReference: {
+          id: '${project.id}}/images/~Catalog~${pool.?catalogName}~${pool.?definition}'
+        }
         sku: {
-          name: 'general_i_8c32gb256ssd_v2' // 8CPU, 32GB RAM, 256GB SSD
+          #disable-next-line BCP321
+          name: compute[pool.?computeSize]
         }
       }
       devBoxDefinitionType: 'Value'
@@ -256,49 +271,59 @@ resource customPools 'Microsoft.DevCenter/projects/pools@2025-02-01' = [for pool
         status: 'Enabled'
       }
     }
-  dependsOn: [
-    devboxDefinitionsRes
-    customCatalog
-  ]
-}]
+    dependsOn: [
+      customCatalog
+    ]
+  }
+]
 
 // Role assignment for dev box users
-resource devboxUsersRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for item in devboxUsers: {
-  name: guid(subscription().id, resourceGroup().id, item.principalId, devBoxUserRoleId)
-  scope: project
-  properties: {
-    principalId: item.principalId
-    principalType: item.principalType
-    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', devBoxUserRoleId)
+resource devboxUsersRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
+  for item in devboxUsers: {
+    name: guid(subscription().id, resourceGroup().id, item.principalId, devBoxUserRoleId)
+    scope: project
+    properties: {
+      principalId: item.principalId
+      principalType: item.principalType
+      roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', devBoxUserRoleId)
+    }
   }
-}]
+]
 
-// Role assignment for dev box users
-resource devcenterAdminsRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for item in devboxAdmins: {
-  name: guid(subscription().id, resourceGroup().id, item.principalId, devCenterAdminRoleId)
-  scope: project
-  properties: {
-    principalId: item.principalId
-    principalType: item.principalType
-    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', devCenterAdminRoleId)
+// Role assignment for dev box admins
+resource devcenterAdminsRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
+  for item in devboxAdmins: {
+    name: guid(subscription().id, resourceGroup().id, item.principalId, devCenterAdminRoleId)
+    scope: project
+    properties: {
+      principalId: item.principalId
+      principalType: item.principalType
+      roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', devCenterAdminRoleId)
+    }
   }
-}]
+]
 
 // MARK: Outputs
 output devcenterName string = devcenter.name
 
-output definitions array = [for (definition, i) in devboxDefinitions: {
-  name: devboxDefinitions[i].name
-}]
+output definitions array = [
+  for (definition, i) in devboxDefinitions: {
+    name: devboxDefinitions[i].name
+  }
+]
 
 output networkConnectionName string = enableNetworking ? networkConnection.name : ''
 
 output projectName string = project.name
 
-output poolNames array = [for (pool, i) in devboxPools: {
-  name: pools[i].name
-}]
+output poolNames array = [
+  for (pool, i) in devboxPools: {
+    name: standardPools[i].name
+  }
+]
 
-output customPoolNames array = [for (pool, i) in devboxCustomPools: {
-  name: pools[i].name
-}]
+output customPoolNames array = [
+  for (pool, i) in devboxCustomPools: {
+    name: customPools[i].name
+  }
+]
