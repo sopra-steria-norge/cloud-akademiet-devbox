@@ -26,10 +26,21 @@ This section is inteded for those who are deploying and managing Dev Center, Dev
 3. Run the deployment with:
 
 ```powershell
-New-AzDeployment -Name "devbox-$(get-date -Format 'ddMMyy-HHmmss')" -Location 'westeurope' -TemplateFile './bicep/main.bicep' -TemplateParameterFile './bicep/main.bicepparam'
+New-AzDeployment -Name "devbox-$(get-date -Format 'yyMMdd-HHmmss')" -Location 'northeurope' -TemplateParameterFile './bicep/main.bicepparam'
 ```
 
 Note: You can optionally replace Azure PowerShell with Azure CLI to deploy using [`az login`](https://learn.microsoft.com/en-us/cli/azure/get-started-with-azure-cli?view=azure-cli-latest#sign-into-the-azure-cli) and [`az deployment sub create`](https://learn.microsoft.com/en-us/cli/azure/deployment/sub?view=azure-cli-latest#az-deployment-sub-create).
+
+#### Known errors
+
+- First time deploy: Go to project, catalogs, select the pen symbol and ensure that you reconnect the repo such that the sync is "Sync successful"
+
+### Giving access to users
+
+To give access to others, add users into the groups specified in [main.bicepparam](./bicep/main.bicepparam). This is currently the Entra groups:
+
+- cloud-akademiet-admins: gives administrative access (DevCenter Project Admin)
+- cloud-akademiet-all: gives access to [create a dev box using the Dev Portal](#end-user-usage)
 
 ### About the Dev Box VMs
 
