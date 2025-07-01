@@ -83,13 +83,12 @@ For additional guide, see [the official docs](https://learn.microsoft.com/en-us/
 ### Use your Dev Box
 
 1. Sign into the Developer Portal: https://devportal.microsoft.com/
-2. Press **Open in RDP Client** on the Dev Box
-3. Choose **Connect via Windows App**
+2. Choose **Connect via Windows App**
   - If you do not have the Windows App, press the link to download and install this app
     - [MacOS Download](https://apps.apple.com/us/app/windows-app/id1295203466?mt=12)
     - [Windows Download](https://apps.microsoft.com/detail/9n1f85v9t8bn?hl=nb-NO&gl=NO)
-4. Press **Connect** to connect to your Dev Box
-5. Enter your Sopra Steria username and password to login
+3. Press **Connect** to connect to your Dev Box
+4. Enter your Sopra Steria username and password to login
 
 For additional guide, see [the official docs](https://learn.microsoft.com/en-us/azure/dev-box/quickstart-create-dev-box#connect-to-a-dev-box)
 
