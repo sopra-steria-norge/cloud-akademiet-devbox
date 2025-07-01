@@ -247,7 +247,7 @@ resource customPools 'Microsoft.DevCenter/projects/pools@2025-02-01' = [
       devBoxDefinitionName: '~Catalog~${pool.?catalogName}~${pool.?definition}'
       devBoxDefinition: {
         imageReference: {
-          id: '${project.id}}/images/~Catalog~${pool.?catalogName}~${pool.?definition}'
+          id: '${project.id}/images/~Catalog~${pool.?catalogName}~${pool.?definition}'
         }
         sku: {
           #disable-next-line BCP321
