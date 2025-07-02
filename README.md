@@ -1,6 +1,6 @@
-# Cloud-akademiet Dev Box
+# Cloud Akademiet - Dev Box
 
-This repository contains the necessary configuration to create [Microsoft Dev Boxes](https://learn.microsoft.com/en-us/azure/dev-box/overview-what-is-microsoft-dev-box) to use as developer workstations for workshop participants in Cloud-akademiet.
+This repository contains the necessary configuration to create [Microsoft Dev Boxes](https://learn.microsoft.com/en-us/azure/dev-box/overview-what-is-microsoft-dev-box) to use as developer workstations for workshop participants in Cloud Akademiet.
 
 :point_right: If you are an end user jump directly down to [end user usage](#end-user-usage).
 
