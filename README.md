@@ -75,8 +75,9 @@ This section is inteded for those who are provided access to provision their own
 
 1. Sign into the Developer Portal: https://devportal.microsoft.com/
 2. Press **+ New** and select **New Dev Box**
-3. Give the Dev Box a name, e.g. `devbox-<firstname>` (you _don't_ need to select any customizations as these are built into the image for you)
-4. Select **Create** to begin provisioning your Dev Box (can take 30-45 minutes)
+3. Give the Dev Box a name, e.g. `devbox-<firstname>`
+4. Do **not** select any customizations
+5. Select **Create** to begin provisioning your Dev Box (can take 25-65 minutes)
 
 For additional guide, see [the official docs](https://learn.microsoft.com/en-us/azure/dev-box/quickstart-create-dev-box#create-a-dev-box).
 
